@@ -1,19 +1,9 @@
 from django.contrib import admin
-from .models import Politician, Statement, Tag
+from .models import AssemblyMember
 
-@admin.register(Politician)
-class PoliticianAdmin(admin.ModelAdmin):
-    list_display = ['name', 'party', 'position', 'created_at']
-    search_fields = ['name', 'party']
-    list_filter = ['party', 'position']
-
-@admin.register(Statement)
-class StatementAdmin(admin.ModelAdmin):
-    list_display = ['politician', 'content', 'source', 'statement_date', 'created_at']
-    search_fields = ['content', 'politician__name']
-    list_filter = ['politician', 'statement_date']
-
-@admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
-    list_display = ['name']
-    search_fields = ['name']
+@admin.register(AssemblyMember)
+class AssemblyMemberAdmin(admin.ModelAdmin):
+    list_display = ['이름', '정당', '선거구', '당선횟수']
+    list_filter = ['정당', '당선횟수']
+    search_fields = ['이름', '정당', '선거구']
+    ordering = ['이름']
