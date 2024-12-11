@@ -132,3 +132,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# API 키 설정 추가
+ASSEMBLY_API_KEY = os.getenv('ASSEMBLY_API_KEY')
