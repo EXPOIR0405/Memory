@@ -55,3 +55,26 @@ class ConferenceContent(models.Model):
     
     def __str__(self):
         return f"회의록 내용 - {self.conference.회의록ID}"
+
+class SpeechRecord(models.Model):
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
+    assembly_member = models.ForeignKey(AssemblyMember, on_delete=models.CASCADE)
+    content = models.TextField()
+    speech_order = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['conference', 'speech_order']
+
+    def __str__(self):
+        return f"{self.assembly_member.이름}의 발언 - {self.conference.회의일자}"
+
+class KeywordAlert(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    keyword = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class MemberAlert(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    assembly_member = models.ForeignKey(AssemblyMember, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)

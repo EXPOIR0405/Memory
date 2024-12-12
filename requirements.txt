@@ -14,3 +14,4 @@ sqlparse==0.5.3
 tqdm==4.67.1
 tzdata==2024.2
 urllib3==2.2.3
+konlpy==0.6.0
