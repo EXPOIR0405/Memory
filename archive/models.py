@@ -30,3 +30,51 @@ class AssemblyMember(models.Model):
 
     def __str__(self):
         return f"{self.이름} ({self.정당})"
+
+class Conference(models.Model):
+    회의록ID = models.CharField(max_length=100, unique=True)
+    대수 = models.CharField(max_length=10)
+    회기 = models.CharField(max_length=10)
+    차수 = models.CharField(max_length=10)
+    회의일자 = models.DateField()
+    회의종류 = models.CharField(max_length=100)
+    위원회코드 = models.CharField(max_length=20)
+    위원회명 = models.CharField(max_length=100)
+    회의록URL = models.URLField()
+    
+    class Meta:
+        ordering = ['-회의일자']
+        
+    def __str__(self):
+        return f"{self.회의일자} {self.위원회명} {self.회의종류}"
+
+class ConferenceContent(models.Model):
+    conference = models.OneToOneField(Conference, on_delete=models.CASCADE)
+    content = models.TextField()
+    parsed_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"회의록 내용 - {self.conference.회의록ID}"
+
+class SpeechRecord(models.Model):
+    conference = models.ForeignKey(Conference, on_delete=models.CASCADE)
+    assembly_member = models.ForeignKey(AssemblyMember, on_delete=models.CASCADE)
+    content = models.TextField()
+    speech_order = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['conference', 'speech_order']
+
+    def __str__(self):
+        return f"{self.assembly_member.이름}의 발언 - {self.conference.회의일자}"
+
+class KeywordAlert(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    keyword = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class MemberAlert(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    assembly_member = models.ForeignKey(AssemblyMember, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
